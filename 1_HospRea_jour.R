@@ -39,7 +39,7 @@ for (i in c)
   
   ggplot(encoursi)+ 
     aes(ymax=ymax, ymin=ymin, xmax=xmax, xmin=xmin, fill=Hospitalisation) +
-    geom_rect(col = "black", size=.5)+
+    geom_rect(col = "black", size=.2)+
     coord_polar(theta="y") +
     xlim(c(0, 12))+
     viridis::scale_fill_viridis(discrete=T)+
@@ -52,7 +52,7 @@ for (i in c)
     theme(plot.title =element_text(hjust=.5) ,
           legend.position ="bottom")
   ggsave(filename = paste0(as.character(as.Date(i,origin="1970-01-01")),".png"),
-         width = 12, height = 12, units ="cm")
+         width = 9, height = 12, units ="cm")
   
 }
 
