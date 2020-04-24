@@ -5,7 +5,7 @@ library(tidyverse)
 library(magick)
 
 # import ----------
-encours <- read_csv2("donnees-hospitalieres-covid19-2020-04-23-19h00.csv")
+encours <- read_csv2("data/donnees-hospitalieres-covid19-2020-04-23-19h00.csv")
 
 # Mise en forme -------
 encours$hosp <- encours$hosp - encours$rea
