@@ -49,7 +49,8 @@ for (i in c)
          fill="",
          caption = "Source : Santé Publique France, 2020\n")+
     theme_void()+ 
-    theme(plot.title =element_text(hjust=.5) )
+    theme(plot.title =element_text(hjust=.5) ,
+          legend.position ="bottom")
   ggsave(filename = paste0(as.character(as.Date(i,origin="1970-01-01")),".png"),
          width = 12, height = 12, units ="cm")
   
