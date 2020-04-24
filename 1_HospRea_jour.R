@@ -26,16 +26,16 @@ c <-seq(as.integer(as.Date(min(encours$jour))),as.integer(as.Date(max(encours$jo
 for (i in c)
 {
   encoursi <- encours %>% filter(jour == as.integer(i))
-encoursi$fraction <- encoursi$nb/sum(encoursi$nb)
- encoursi$ymax <-  cumsum(encoursi$fraction)
+  encoursi$fraction <- encoursi$nb/sum(encoursi$nb)
+  encoursi$ymax <-  cumsum(encoursi$fraction)
   encoursi$ymin  <-  c(0, head(encoursi$ymax, n=-1))
   
   xmin <- 6 - sum(encoursi$nb) * 4 / (max-min)
   xmax <- 6 + sum(encoursi$nb) * 4 / (max-min)
   
   encoursi$Hospitalisation <- fct_recode(encoursi$Hospitalisation,
-                                              "Hors réanimation"="hosp",
-                                              "En réanimation"="rea")
+                                         "Hors réanimation"="hosp",
+                                         "En réanimation"="rea")
   
   ggplot(encoursi)+ 
     aes(ymax=ymax, ymin=ymin, xmax=xmax, xmin=xmin, fill=Hospitalisation) +
@@ -51,7 +51,7 @@ encoursi$fraction <- encoursi$nb/sum(encoursi$nb)
     theme_void()+ 
     theme(plot.title =element_text(hjust=.5) )
   ggsave(filename = paste0(as.character(as.Date(i,origin="1970-01-01")),".png"),
-         width = 17, height = 20, units ="cm")
+         width = 12, height = 12, units ="cm")
   
 }
 
@@ -61,5 +61,5 @@ list.files(pattern = "*.png", full.names = T) %>%
   map(image_read) %>% # reads each path file
   image_join() %>% # joins image
   image_animate(fps=4) %>% # animates, can opt for number of loops
-  image_write("TT1_covid.gif") # write to current dir
+  image_write("1_HospRea_jour.gif") # write to current dir
 
