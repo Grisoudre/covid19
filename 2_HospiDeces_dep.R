@@ -41,6 +41,33 @@ exo <- merge(exo,
              tests %>% select(-jour),
              by.x="Code", by.y="dep", all.x=T)
 
+tests <- read_csv2("data/SP_tests/donnees-tests-covid19-labo-quotidien-2020-04-25-19h00.csv")
+
+tests <- tests %>% 
+  filter(clage_covid =="0" & jour <= '2020-04-13')
+tests$nb_tests_cum <- tests$nb_test
+tests$nb_pos_cum <- tests$nb_pos
+for (i in 2:nrow(tests)){
+  if(tests$dep[i]==tests$dep[i-1]){
+    tests$nb_tests_cum[i] <- tests$nb_tests_cum[i-1] + tests$nb_tests_cum[i] 
+    tests$nb_pos_cum[i] <- tests$nb_pos_cum[i-1] + tests$nb_pos_cum[i] 
+  }
+}
+tests <- tests %>% 
+  filter(jour == max(jour)) %>% 
+  select(dep,jour, nb_tests_cum, nb_pos_cum)  %>% 
+  mutate(part_pos = round(nb_pos_cum/nb_tests_cum*100,1))
+
+names(tests)[names(tests)=="nb_tests_cum"] <- paste0("nb_tests_cum_",unique(tests$jour))
+names(tests)[names(tests)=="nb_pos_cum"] <- paste0("nb_pos_cum_",unique(tests$jour))
+names(tests)[names(tests)=="part_pos"] <- paste0("part_pos_",unique(tests$jour))
+
+
+exo <- merge(exo, 
+             tests %>% select(-jour),
+             by.x="Code", by.y="dep", all.x=T)
+
+
 # Ajout du nb max d'hospitalisation------
 
 max <- max %>% group_by(dep) %>% summarise(hosp = max(hosp))
